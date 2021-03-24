@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:background_fetch/background_fetch.dart';
@@ -46,6 +47,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  Timer _timer;
+  int t =1;
+
   @override
   void initState() {
     super.initState();
@@ -73,6 +77,10 @@ class _MyHomePageState extends State<MyHomePage> {
       // });
       // IMPORTANT:  You must signal completion of your task or the OS can punish your app
       // for taking too long in the background.
+      _timer = Timer.periodic(const Duration(seconds: 15), (_) {
+        t++;
+        print("[BackgroundFetch] Event received "+t.toString());
+      });
       BackgroundFetch.finish(taskId);
     }, (String taskId) async {  // <-- Task timeout handler.
       // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
@@ -97,6 +105,23 @@ class _MyHomePageState extends State<MyHomePage> {
       debugPrint(data);
     }
   }
+  bool _enabled = true;
+  void _onClickEnable(enabled) {
+    setState(() {
+      _enabled = !enabled;
+    });
+    if (enabled) {
+      BackgroundFetch.start().then((int status) {
+        print('[BackgroundFetch] start success: $status');
+      }).catchError((e) {
+        print('[BackgroundFetch] start FAILURE: $e');
+      });
+    } else {
+      BackgroundFetch.stop().then((int status) {
+        print('[BackgroundFetch] stop success: $status');
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Text("Start Background"),
             onPressed: (){
               print('kkk');
+              _onClickEnable(_enabled);
                   // startServiceInPlatform();
             }
 
