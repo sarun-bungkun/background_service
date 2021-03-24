@@ -1,18 +1,19 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
 
-@implementation AppDelegate
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
-- (BOOL)application:(UIApplication *)application
-    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  [GeneratedPluginRegistrant registerWithRegistry:self];
-  // Override point for customization after application launch.
-  UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+    var window: UIWindow?
 
-  return [super application:application didFinishLaunchingWithOptions:launchOptions];
-}
 
-func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Setup Fetch Interval
+        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
+        return true
+    }
+
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // Create url which from we will get fresh data
         if let url = URL(string: "https://www.vialyx.com") {
             // Send request
@@ -29,4 +30,4 @@ func application(_ application: UIApplication, performFetchWithCompletionHandler
         }
     }
 
-@end
+}
