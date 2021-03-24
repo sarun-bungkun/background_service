@@ -9,8 +9,6 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
   String taskId = task.taskId;
   bool isTimeout = task.timeout;
   if (isTimeout) {
-    // This task has exceeded its allowed running-time.
-    // You must stop what you're doing and immediately .finish(taskId)
     print("[BackgroundFetch] Headless task timed-out: $taskId");
     BackgroundFetch.finish(taskId);
     return;
@@ -77,10 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
       // });
       // IMPORTANT:  You must signal completion of your task or the OS can punish your app
       // for taking too long in the background.
-      _timer = Timer.periodic(const Duration(seconds: 15), (_) {
-        t++;
-        print("[BackgroundFetch] Event received "+t.toString());
-      });
+      // _timer = Timer.periodic(const Duration(seconds: 15), (_) {
+      //   t++;
+      //   print("[BackgroundFetch] Event received "+t.toString());
+      // });
       BackgroundFetch.finish(taskId);
     }, (String taskId) async {  // <-- Task timeout handler.
       // This task has exceeded its allowed running-time.  You must stop what you're doing and immediately .finish(taskId)
