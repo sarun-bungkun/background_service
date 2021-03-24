@@ -1,33 +1,14 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+@implementation AppDelegate
 
-    var window: UIWindow?
+- (BOOL)application:(UIApplication *)application
+    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+  [GeneratedPluginRegistrant registerWithRegistry:self];
+  // Override point for customization after application launch.
 
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Setup Fetch Interval
-        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
-        return true
-    }
-
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        // Create url which from we will get fresh data
-        if let url = URL(string: "https://www.vialyx.com") {
-            // Send request
-            URLSession.shared.dataTask(with: url, completionHandler: { (data, respone, error) in
-                // Check Data
-                guard let `data` = data else { completionHandler(.failed); return }
-                // Get result from data
-                let result = String(data: data, encoding: .utf8)
-                // Print result into console
-                print("performFetchWithCompletionHandler result: \(String(describing: result))")
-                // Call background fetch completion with .newData result
-                completionHandler(.newData)
-            }).resume()
-        }
-    }
-
+  return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
+
+@end
